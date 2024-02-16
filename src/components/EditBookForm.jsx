@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { updateBooksAPI } from '../api/BooksAPI';
+import { v4 as uuidv4 } from 'uuid'
 
 function EditBookForm() {
   const { pathname } = useLocation();
@@ -48,17 +50,18 @@ function EditBookForm() {
       return;
     }
 
-    try {
-      const db = await indexedDB.open('myBooksDB');
-      const transaction = db.transaction(['books'], 'readwrite');
-      const booksObjectStore = transaction.objectStore('books');
-      const updatedBook = { ...book, title, category, description };
-      await booksObjectStore.put(updatedBook);
-      console.log('Livre mis à jour avec succès dans IndexedDB');
-      // Rediriger vers la page de liste des livres
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du livre:', error);
-    }
+    // try {
+    //   const db = await indexedDB.open('myBooksDB');
+    //   const transaction = db.transaction(['books'], 'readwrite');
+    //   const booksObjectStore = transaction.objectStore('books');
+    //   const updatedBook = { ...book, title, category, description };
+    //   await booksObjectStore.put(updatedBook);
+    //   console.log('Livre mis à jour avec succès dans IndexedDB');
+    //   // Rediriger vers la page de liste des livres
+    // } catch (error) {
+    //   console.error('Erreur lors de la mise à jour du livre:', error);
+    // }
+    updateBooksAPI(title, category, description)
   };
 
   return (

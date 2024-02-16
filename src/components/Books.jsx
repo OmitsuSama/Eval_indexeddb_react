@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getBooks } from '../api/BooksAPI'
+import { deleteBooksAPI } from '../api/BooksAPI'
 
 function Books() {
   const [books, setBooks] = useState([]);
 
   const handleDeleteClick = (bookId) => {
     // Fonction pour supprimer le livre de la base de données IndexedDB
-    async function deleteBook() {
-      try {
-        const db = await indexedDB.open('myBooksDB');
-        const transaction = db.transaction(['books'], 'readwrite');
-        const booksObjectStore = transaction.objectStore('books');
-        await booksObjectStore.delete(bookId);
-        console.log('Livre supprimé avec succès de IndexedDB');
+    // async function deleteBook() {
+    //   try {
+    //     const db = await indexedDB.open('myBooksDB');
+    //     const transaction = db.transaction(['books'], 'readwrite');
+    //     const booksObjectStore = transaction.objectStore('books');
+    //     await booksObjectStore.delete(bookId);
+    //     console.log('Livre supprimé avec succès de IndexedDB');
 
-        // Mettre à jour l'état local pour supprimer le livre de la liste
-        setBooks(books.filter(book => book.id !== bookId));
-      } catch (error) {
-        console.error('Erreur lors de la suppression du livre:', error);
-      }
+    //     // Mettre à jour l'état local pour supprimer le livre de la liste
+    //     setBooks(books.filter(book => book.id !== bookId));
+    //   } catch (error) {
+    //     console.error('Erreur lors de la suppression du livre:', error);
+    //   }
+    deleteBooksAPI(bookId)
     }
 
     // Confirmation avant de supprimer
@@ -60,7 +62,6 @@ function Books() {
 
     const fetchBooks = async () => {
       let books = await getBooks()
-      dispatch(setBooks(books))
     }
 
     fetchBooks()

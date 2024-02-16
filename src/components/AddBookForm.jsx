@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { addBooksAPI } from '../api/BooksAPI';
+import { v4 as uuidv4 } from 'uuid'
 
 function AddBookForm() {
   const [title, setTitle] = useState('');
@@ -9,34 +11,36 @@ function AddBookForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    try {
-      // Ouvrir la base de données
-      const db = await indexedDB.open('myBooksDB');
+    // try {
+    //   // Ouvrir la base de données
+    //   const db = await indexedDB.open('myBooksDB');
 
-      // Ouvrir une transaction en écriture sur l'objet store 'books'
-      const transaction = db.transaction(['books'], 'readwrite');
-      const booksObjectStore = transaction.objectStore('books');
+    //   // Ouvrir une transaction en écriture sur l'objet store 'books'
+    //   const transaction = db.transaction(['books'], 'readwrite');
+    //   const booksObjectStore = transaction.objectStore('books');
 
-      // Ajouter le nouveau livre à l'objet store 'books'
-      const newBook = { title, category, description };
-      const request = booksObjectStore.add(newBook);
+    //   // Ajouter le nouveau livre à l'objet store 'books'
+    //   const newBook = { title, category, description };
+    //   const request = booksObjectStore.add(newBook);
 
-      // Gérer la réussite de l'ajout
-      request.onsuccess = function(event) {
-        console.log('Nouveau livre ajouté à IndexedDB avec l\'ID:', event.target.result);
-        // Réinitialiser les champs du formulaire après l'ajout
-        setTitle('');
-        setCategory('');
-        setDescription('');
-      };
+    //   // Gérer la réussite de l'ajout
+    //   request.onsuccess = function(event) {
+    //     console.log('Nouveau livre ajouté à IndexedDB avec l\'ID:', event.target.result);
+    //     // Réinitialiser les champs du formulaire après l'ajout
+    //     setTitle('');
+    //     setCategory('');
+    //     setDescription('');
+    //   };
 
-      // Gérer l'erreur lors de l'ajout
-      request.onerror = function(event) {
-        console.error('Erreur lors de l\'ajout du livre à IndexedDB:', event.target.error);
-      };
-    } catch (error) {
-      console.error('Erreur lors de l\'accès à IndexedDB:', error);
-    }
+    //   // Gérer l'erreur lors de l'ajout
+    //   request.onerror = function(event) {
+    //     console.error('Erreur lors de l\'ajout du livre à IndexedDB:', event.target.error);
+    //   };
+    // } catch (error) {
+    //   console.error('Erreur lors de l\'accès à IndexedDB:', error);
+    // }
+    let id = uuidv4()
+    addBooksAPI(id, title, category, description)
   };
 
   return (
