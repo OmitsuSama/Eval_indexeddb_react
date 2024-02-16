@@ -4,12 +4,13 @@ import './App.css'
 import EditBookForm from './components/EditBookForm';
 import AddBookForm from './components/AddBookForm';
 import Books from './components/Books'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 function App() {
   return (
     <>
-      <Router>
+       <Router>
         <div className="container-app">
           <Routes>
             <Route path="/" element={<Books />} />
@@ -18,9 +19,6 @@ function App() {
           </Routes>
         </div>
       </Router>
-      <div className="container-app">
-        <Books />
-      </div>
     </>
   )
 }

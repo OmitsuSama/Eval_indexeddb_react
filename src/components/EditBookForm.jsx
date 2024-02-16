@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function EditBookForm() {
@@ -13,11 +13,15 @@ function EditBookForm() {
 
   useEffect(() => {
     async function fetchBookData() {
-      const db = await indexedDB.open('myBooksDB');
-      const transaction = db.transaction(['books'], 'readonly');
-      const booksObjectStore = transaction.objectStore('books');
-      const fetchedBook = await booksObjectStore.get(bookId);
-      setBook(fetchedBook);
+      try {
+        const db = await indexedDB.open('myBooksDB');
+        const transaction = db.transaction(['books'], 'readonly');
+        const booksObjectStore = transaction.objectStore('books');
+        const fetchedBook = await booksObjectStore.get(bookId);
+        setBook(fetchedBook);
+      } catch (error) {
+        console.error('Erreur lors de la récupération du livre:', error);
+      }
     }
 
     fetchBookData();
@@ -53,7 +57,7 @@ function EditBookForm() {
       console.log('Livre mis à jour avec succès dans IndexedDB');
       // Rediriger vers la page de liste des livres
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du livre dans IndexedDB:', error);
+      console.error('Erreur lors de la mise à jour du livre:', error);
     }
   };
 
